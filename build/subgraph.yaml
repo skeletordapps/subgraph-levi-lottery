@@ -1,0 +1,42 @@
+specVersion: 0.0.5
+schema:
+  file: schema.graphql
+dataSources:
+  - kind: ethereum
+    name: Contract
+    network: goerli
+    source:
+      address: "0xB2e0566Eb4f62981009ab511479E7860b1E25b0c"
+      abi: Contract
+      startBlock: 8099715
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - EntriesBought
+        - GLPBought
+        - GLPSent
+        - Refunded
+        - RoundActivated
+        - WinnerSelected
+        - Withdrawed
+      abis:
+        - name: Contract
+          file: Contract/abis/Contract.json
+      eventHandlers:
+        - event: EntriesBought(indexed address,indexed uint256,uint256,uint256)
+          handler: handleEntriesBought
+        - event: GLPBought(indexed address,indexed address,uint256,uint256,uint256)
+          handler: handleGLPBought
+        - event: GLPSent(indexed address,indexed address,uint256)
+          handler: handleGLPSent
+        - event: Refunded(address,uint256,uint256,uint256)
+          handler: handleRefunded
+        - event: RoundActivated(uint256)
+          handler: handleRoundActivated
+        - event: WinnerSelected(indexed address,indexed address,uint256,uint256,uint256,uint256)
+          handler: handleWinnerSelected
+        - event: Withdrawed(indexed address,uint256)
+          handler: handleWithdrawed
+      file: Contract/Contract.wasm
