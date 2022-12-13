@@ -6,7 +6,7 @@ dataSources:
     name: Contract
     network: goerli
     source:
-      address: "0xB2e0566Eb4f62981009ab511479E7860b1E25b0c"
+      address: "0x6c6D7309fB22fa8c617520ad71FC25D5bC7A4Af3"
       abi: Contract
       startBlock: 8099715 
     mapping:
@@ -16,7 +16,6 @@ dataSources:
       entities:
         - EntriesBought
         - GLPBought
-        - GLPSent
         - Refunded
         - RoundActivated
         - WinnerSelected
@@ -29,8 +28,6 @@ dataSources:
           handler: handleEntriesBought
         - event: GLPBought(indexed address,indexed address,uint256,uint256,uint256)
           handler: handleGLPBought
-        - event: GLPSent(indexed address,indexed address,uint256)
-          handler: handleGLPSent
         - event: Refunded(address,uint256,uint256,uint256)
           handler: handleRefunded
         - event: RoundActivated(uint256)
