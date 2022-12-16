@@ -5,7 +5,7 @@ import {
   RoundActivated as RoundActivatedEvent,
   WinnerSelected as WinnerSelectedEvent,
   Withdrawed as WithdrawedEvent,
-} from '../generated/Contract/Contract'
+} from '../generated/LeviLottoV2/LeviLottoV2'
 import {
   EntriesBought,
   GLPBought,
@@ -13,7 +13,16 @@ import {
   RoundActivated,
   WinnerSelected,
   Withdrawed,
+  Lotto,
+  Round,
+  User,
+  UserEntry
 } from '../generated/schema'
+
+import {
+  BigInt,
+  ethereum,
+} from "@graphprotocol/graph-ts";
 
 export function handleEntriesBought(event: EntriesBoughtEvent): void {
   let entity = new EntriesBought(
@@ -29,6 +38,8 @@ export function handleEntriesBought(event: EntriesBoughtEvent): void {
   entity.transactionHash = event.transaction.hash
 
   entity.save()
+
+  handleRound(event)
 }
 
 export function handleGLPBought(event: GLPBoughtEvent): void {
@@ -46,6 +57,8 @@ export function handleGLPBought(event: GLPBoughtEvent): void {
   entity.transactionHash = event.transaction.hash
 
   entity.save()
+
+  handleGlpConverted(event)
 }
 
 export function handleRefunded(event: RefundedEvent): void {
@@ -93,6 +106,8 @@ export function handleWinnerSelected(event: WinnerSelectedEvent): void {
   entity.transactionHash = event.transaction.hash
 
   entity.save()
+
+  handleCollectedFees(event)
 }
 
 export function handleWithdrawed(event: WithdrawedEvent): void {
@@ -107,4 +122,94 @@ export function handleWithdrawed(event: WithdrawedEvent): void {
   entity.transactionHash = event.transaction.hash
 
   entity.save()
+}
+
+
+
+// NEW MAPPINGS
+
+function getLotto(): Lotto {
+  let lotto = Lotto.load("levi-lotto")
+
+  if (!lotto) {
+    lotto = new Lotto("levi-lotto")
+    lotto.feesCollected = BigInt.fromI32(0)
+    lotto.glpConverted = BigInt.fromI32(0)
+  }
+
+  return lotto
+}
+
+export function handleCollectedFees(event: WinnerSelectedEvent): void {
+  let lotto = getLotto()
+  let fees = lotto.feesCollected + event.params.fee
+  lotto.feesCollected = fees
+  lotto.save()
+}
+
+export function handleGlpConverted(event: GLPBoughtEvent): void {
+  let lotto = getLotto()
+  let fees = lotto.feesCollected - event.params.amountEthConverted
+  let glp = lotto.glpConverted + event.params.glpBought
+
+  lotto.feesCollected = fees
+  lotto.glpConverted = glp
+  lotto.save()
+}
+
+export function handleRoundWinner(event: WinnerSelectedEvent): void {
+  let round = Round.load(event.params.round.toString())
+  let user = User.load(event.params.winner.toString())
+
+  if (round && user) {
+    round.winner = user.id
+    round.save()
+  }
+}
+
+export function handleRound(event: EntriesBoughtEvent): void {
+  let round = Round.load(event.params.round.toString())
+  let user = User.load(event.params.account.toString())
+
+  if (!round) {
+    round = new Round(event.params.round.toString())
+    round.status = "OPEN"
+    round.totalEntries = BigInt.fromI32(0)
+    round.users = []
+  }
+
+  round.totalEntries += event.params.accountEntries
+  
+  if (!user) {
+    user = new User(event.params.account.toString())
+    user.account = event.params.account
+    user.userEntries = []
+  }
+
+  user.save()
+
+  if (round.users.length >= 5) {
+    round.status = "ACTIVATED"
+  }
+  
+  let roundUsers = round.users
+  roundUsers.push(user.id)
+  round.users = roundUsers
+  round.save()
+  const userEntryId = event.params.account.toString() + event.params.round.toString()
+  let userEntry = UserEntry.load(userEntryId)
+
+  if (!userEntry) {
+    userEntry = new UserEntry(userEntryId)
+    userEntry.round = round.id
+    userEntry.total = event.params.accountEntries
+  }
+
+  userEntry.save()
+
+  let userEntries = user.userEntries
+  userEntries.push(userEntry.id)
+  user.userEntries = userEntries
+  
+  user.save()
 }

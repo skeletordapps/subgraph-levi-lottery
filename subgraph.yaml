@@ -3,26 +3,24 @@ schema:
   file: ./schema.graphql
 dataSources:
   - kind: ethereum
-    name: Contract
+    name: LeviLottoV2
     network: goerli
     source:
       address: "0x6c6D7309fB22fa8c617520ad71FC25D5bC7A4Af3"
-      abi: Contract
+      abi: LeviLottoV2
       startBlock: 8099715 
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
       language: wasm/assemblyscript
       entities:
-        - EntriesBought
-        - GLPBought
-        - Refunded
-        - RoundActivated
-        - WinnerSelected
-        - Withdrawed
+        - Lotto
+        - Round
+        - User
+        - UserEntry
       abis:
-        - name: Contract
-          file: ./abis/Contract.json
+        - name: LeviLottoV2
+          file: ./abis/LeviLottoV2.json
       eventHandlers:
         - event: EntriesBought(indexed address,indexed uint256,uint256,uint256)
           handler: handleEntriesBought
@@ -36,4 +34,4 @@ dataSources:
           handler: handleWinnerSelected
         - event: Withdrawed(indexed address,uint256)
           handler: handleWithdrawed
-      file: ./src/contract.ts
+      file: ./src/mapping.ts

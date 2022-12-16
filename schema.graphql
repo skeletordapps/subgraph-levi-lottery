@@ -1,3 +1,9 @@
+enum RoundStatus {
+  OPEN
+  ACTIVATED
+  CLOSED
+}
+
 type EntriesBought @entity(immutable: true) {
   id: Bytes!
   account: Bytes! # address
@@ -61,3 +67,32 @@ type Withdrawed @entity(immutable: true) {
   blockTimestamp: BigInt!
   transactionHash: Bytes!
 }
+
+type Lotto @entity {
+  id: ID!
+  # entryFee: BigInt!
+  feesCollected: BigInt!
+  glpConverted: BigInt!
+}
+
+type Round @entity {
+  id: ID!
+  status: RoundStatus!
+  totalEntries: BigInt!
+  users: [User!]! 
+  winner: User
+}
+
+type User @entity {
+  id: ID!
+  account: Bytes!
+  userEntries: [UserEntry!]!
+}
+
+type UserEntry @entity {
+  id: ID!
+  round: Round!
+  total: BigInt!
+}
+
+
