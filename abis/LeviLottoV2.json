@@ -1,21 +1,47 @@
 [
   {
     "inputs": [
-      { "internalType": "address", "name": "_multisig", "type": "address" }
+      {
+        "internalType": "address",
+        "name": "_multisig",
+        "type": "address"
+      }
     ],
     "stateMutability": "nonpayable",
     "type": "constructor"
   },
   {
-    "inputs": [],
+    "inputs": [
+      
+    ],
     "name": "Levi_Lottery_Cannot_Process_Refund",
     "type": "error"
   },
-  { "inputs": [], "name": "Levi_Lottery_Cannot_Send_GLP", "type": "error" },
-  { "inputs": [], "name": "Levi_Lottery_Cant_Select_Winner", "type": "error" },
-  { "inputs": [], "name": "Levi_Lottery_Insufficient_Ether", "type": "error" },
   {
-    "inputs": [],
+    "inputs": [
+      
+    ],
+    "name": "Levi_Lottery_Cannot_Send_GLP",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      
+    ],
+    "name": "Levi_Lottery_Cant_Select_Winner",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      
+    ],
+    "name": "Levi_Lottery_Insufficient_Ether",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      
+    ],
     "name": "Levi_Lottery_Invalid_Amount_Entries",
     "type": "error"
   },
@@ -219,164 +245,322 @@
     "type": "event"
   },
   {
-    "inputs": [],
+    "inputs": [
+      
+    ],
     "name": "GMX_REWARD_ROUTER",
-    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
-    "inputs": [],
+    "inputs": [
+      
+    ],
     "name": "MULTISIG",
-    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
-    "inputs": [],
+    "inputs": [
+      
+    ],
     "name": "STAKED_GLP",
-    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
-    "inputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
     "name": "balances",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
-    "inputs": [],
+    "inputs": [
+      
+    ],
     "name": "convertEthBalanceIntoGLP",
-    "outputs": [],
+    "outputs": [
+      
+    ],
     "stateMutability": "nonpayable",
     "type": "function"
   },
   {
     "inputs": [
-      { "internalType": "uint256", "name": "amountEntries", "type": "uint256" }
+      {
+        "internalType": "uint256",
+        "name": "amountEntries",
+        "type": "uint256"
+      }
     ],
     "name": "enterLottery",
-    "outputs": [],
+    "outputs": [
+      
+    ],
     "stateMutability": "payable",
     "type": "function"
   },
   {
-    "inputs": [],
+    "inputs": [
+      
+    ],
     "name": "entryPrice",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
-    "name": "etherCollectedInRound",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [
-      { "internalType": "uint256", "name": "round", "type": "uint256" }
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "etherCollectedInRound",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "round",
+        "type": "uint256"
+      }
     ],
     "name": "getRefund",
-    "outputs": [],
+    "outputs": [
+      
+    ],
     "stateMutability": "nonpayable",
     "type": "function"
   },
   {
-    "inputs": [],
+    "inputs": [
+      
+    ],
     "name": "getRound",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [
-      { "internalType": "uint256", "name": "", "type": "uint256" },
-      { "internalType": "address", "name": "", "type": "address" }
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
     ],
     "name": "hasClaimedRefund",
-    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "interval",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "lastTimeGLPBought",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [
-      { "internalType": "uint256", "name": "", "type": "uint256" },
-      { "internalType": "address", "name": "", "type": "address" }
+      
+    ],
+    "name": "interval",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
     ],
     "name": "numberOfEntriesInRoundPerAccount",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [
-      { "internalType": "uint256", "name": "", "type": "uint256" },
-      { "internalType": "uint256", "name": "", "type": "uint256" }
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
     ],
     "name": "playersInRound",
-    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
-    "name": "roundClosed",
-    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [
-      { "internalType": "uint256", "name": "round", "type": "uint256" }
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "roundClosed",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "round",
+        "type": "uint256"
+      }
     ],
     "name": "selectWinner",
-    "outputs": [],
+    "outputs": [
+      
+    ],
     "stateMutability": "nonpayable",
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "sendGLPToMultisig",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
+    "inputs": [
+      
+    ],
     "name": "startDate",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
-    "inputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
     "name": "uniqueAccountsInRound",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
-    "inputs": [],
+    "inputs": [
+      
+    ],
     "name": "withdraw",
-    "outputs": [],
+    "outputs": [
+      
+    ],
     "stateMutability": "nonpayable",
     "type": "function"
   }

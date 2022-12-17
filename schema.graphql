@@ -70,7 +70,7 @@ type Withdrawed @entity(immutable: true) {
 
 type Lotto @entity {
   id: ID!
-  # entryFee: BigInt!
+  entryFee: BigDecimal!
   feesCollected: BigInt!
   glpConverted: BigInt!
 }
@@ -87,6 +87,7 @@ type User @entity {
   id: ID!
   account: Bytes!
   userEntries: [UserEntry!]!
+  balance: BigInt!
 }
 
 type UserEntry @entity {

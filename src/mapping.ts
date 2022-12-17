@@ -20,6 +20,7 @@ import {
 } from '../generated/schema'
 
 import {
+  BigDecimal,
   BigInt,
   ethereum,
 } from "@graphprotocol/graph-ts";
@@ -128,11 +129,19 @@ export function handleWithdrawed(event: WithdrawedEvent): void {
 
 // NEW MAPPINGS
 
+export function handleBlockWithCreateOnContract(block: ethereum.Block): void {
+  let lotto = getLotto()
+  lotto.save()
+
+}
+
 function getLotto(): Lotto {
   let lotto = Lotto.load("levi-lotto")
 
   if (!lotto) {
+    const fee = BigDecimal.fromString("0.001")
     lotto = new Lotto("levi-lotto")
+    lotto.entryFee = fee
     lotto.feesCollected = BigInt.fromI32(0)
     lotto.glpConverted = BigInt.fromI32(0)
   }
@@ -167,6 +176,35 @@ export function handleRoundWinner(event: WinnerSelectedEvent): void {
   }
 }
 
+// export function handleUser(event: EntriesBoughtEvent): void {
+//   let user = User.load(event.params.account.toString())
+//   let round = Round.load(event.params.round.toString())
+
+//   if (!user) {
+//     user = new User(event.params.account.toString())
+//     user.account = event.params.account
+//     user.userEntries = []
+//     user.balance = BigInt.fromI32(0)
+//   }
+
+//   const userEntryId = event.params.account.toString() + event.params.round.toString()
+//   let userEntry = UserEntry.load(userEntryId)
+
+//   if (!userEntry) {
+//     userEntry = new UserEntry(userEntryId)
+//     userEntry.total = event.params.accountEntries
+//   }
+
+//   userEntry.round = round.id
+
+//   let userEntries = user.userEntries
+//   userEntries.push(userEntry.id)
+//   user.userEntries = userEntries
+  
+//   userEntry.save()
+//   user.save()
+// }
+
 export function handleRound(event: EntriesBoughtEvent): void {
   let round = Round.load(event.params.round.toString())
   let user = User.load(event.params.account.toString())
@@ -184,6 +222,7 @@ export function handleRound(event: EntriesBoughtEvent): void {
     user = new User(event.params.account.toString())
     user.account = event.params.account
     user.userEntries = []
+    user.balance = BigInt.fromI32(0)
   }
 
   user.save()
