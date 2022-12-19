@@ -73,6 +73,8 @@ type Lotto @entity {
   entryFee: BigDecimal!
   feesCollected: BigInt!
   glpConverted: BigInt!
+  currentRound: BigInt!
+  currentBlock: String!
 }
 
 type Round @entity {

@@ -35,7 +35,7 @@ dataSources:
         - event: Withdrawed(indexed address,uint256)
           handler: handleWithdrawed
       blockHandlers:
-        - handler: handleBlockWithCreateOnContract
-          filter:
-            kind: call
+        - handler: handleBlock
+          # filter:
+          #   kind: call
       file: ./src/mapping.ts

@@ -16,14 +16,10 @@ import {
   Lotto,
   Round,
   User,
-  UserEntry
+  UserEntry,
 } from '../generated/schema'
 
-import {
-  BigDecimal,
-  BigInt,
-  ethereum,
-} from "@graphprotocol/graph-ts";
+import { BigDecimal, BigInt, Entity, ethereum } from '@graphprotocol/graph-ts'
 
 export function handleEntriesBought(event: EntriesBoughtEvent): void {
   let entity = new EntriesBought(
@@ -125,25 +121,73 @@ export function handleWithdrawed(event: WithdrawedEvent): void {
   entity.save()
 }
 
-
-
 // NEW MAPPINGS
 
-export function handleBlockWithCreateOnContract(block: ethereum.Block): void {
-  let lotto = getLotto()
-  lotto.save()
+const INTERVAL = BigInt.fromI32(259200)
+const START_DATE = BigInt.fromI32(1670946384)
+const ENTRY_FEE = BigDecimal.fromString('0.001')
 
+function getCurrentRound(block: BigInt): BigInt {
+  return block.minus(START_DATE).div(INTERVAL).plus(BigInt.fromI32(1))
+}
+
+function updateLotto(currentRound: BigInt, block: ethereum.Block): void {
+  let lotto = getLotto()
+  lotto.currentRound = currentRound
+  lotto.currentBlock = block.timestamp.toString()
+  lotto.save()
+}
+
+function getRound(roundId: string): Round {
+  let round = Round.load(roundId)
+
+  if (!round) {
+    round = new Round(roundId)
+    round.status = 'OPEN'
+    round.totalEntries = BigInt.fromI32(0)
+    round.users = []
+  }
+
+  return round
+}
+
+function createdNewRoundIfNeeds(roundCandidateId: BigInt): void {
+  let roundCandidate = Round.load(roundCandidateId.toString())
+
+  if (!roundCandidate) {
+    let newRound = getRound(roundCandidateId.toString())
+    newRound.save()
+
+    if (roundCandidateId > BigInt.fromI32(1)) {
+      let currentRound = getRound(
+        roundCandidateId.minus(BigInt.fromI32(1)).toString(),
+      )
+      currentRound.status = 'CLOSED'
+      currentRound.save()
+    }
+  }
+}
+
+export function handleBlock(block: ethereum.Block): void {
+  let currentRound = getCurrentRound(
+    BigInt.fromString(block.timestamp.toString()),
+  )
+
+  if (currentRound > BigInt.fromI32(0)) {
+    updateLotto(currentRound, block)
+    createdNewRoundIfNeeds(currentRound)
+  }
 }
 
 function getLotto(): Lotto {
-  let lotto = Lotto.load("levi-lotto")
+  let lotto = Lotto.load('levi-lotto')
 
   if (!lotto) {
-    const fee = BigDecimal.fromString("0.001")
-    lotto = new Lotto("levi-lotto")
-    lotto.entryFee = fee
+    lotto = new Lotto('levi-lotto')
+    lotto.entryFee = ENTRY_FEE
     lotto.feesCollected = BigInt.fromI32(0)
     lotto.glpConverted = BigInt.fromI32(0)
+    lotto.currentRound = BigInt.fromI32(1)
   }
 
   return lotto
@@ -151,15 +195,15 @@ function getLotto(): Lotto {
 
 export function handleCollectedFees(event: WinnerSelectedEvent): void {
   let lotto = getLotto()
-  let fees = lotto.feesCollected + event.params.fee
+  let fees = lotto.feesCollected.plus(event.params.fee)
   lotto.feesCollected = fees
   lotto.save()
 }
 
 export function handleGlpConverted(event: GLPBoughtEvent): void {
   let lotto = getLotto()
-  let fees = lotto.feesCollected - event.params.amountEthConverted
-  let glp = lotto.glpConverted + event.params.glpBought
+  let fees = lotto.feesCollected.minus(event.params.amountEthConverted)
+  let glp = lotto.glpConverted.plus(event.params.glpBought)
 
   lotto.feesCollected = fees
   lotto.glpConverted = glp
@@ -176,48 +220,11 @@ export function handleRoundWinner(event: WinnerSelectedEvent): void {
   }
 }
 
-// export function handleUser(event: EntriesBoughtEvent): void {
-//   let user = User.load(event.params.account.toString())
-//   let round = Round.load(event.params.round.toString())
-
-//   if (!user) {
-//     user = new User(event.params.account.toString())
-//     user.account = event.params.account
-//     user.userEntries = []
-//     user.balance = BigInt.fromI32(0)
-//   }
-
-//   const userEntryId = event.params.account.toString() + event.params.round.toString()
-//   let userEntry = UserEntry.load(userEntryId)
-
-//   if (!userEntry) {
-//     userEntry = new UserEntry(userEntryId)
-//     userEntry.total = event.params.accountEntries
-//   }
-
-//   userEntry.round = round.id
-
-//   let userEntries = user.userEntries
-//   userEntries.push(userEntry.id)
-//   user.userEntries = userEntries
-  
-//   userEntry.save()
-//   user.save()
-// }
-
 export function handleRound(event: EntriesBoughtEvent): void {
-  let round = Round.load(event.params.round.toString())
   let user = User.load(event.params.account.toString())
+  let round = getRound(event.params.round.toString())
+  round.totalEntries = round.totalEntries.plus(event.params.accountEntries)
 
-  if (!round) {
-    round = new Round(event.params.round.toString())
-    round.status = "OPEN"
-    round.totalEntries = BigInt.fromI32(0)
-    round.users = []
-  }
-
-  round.totalEntries += event.params.accountEntries
-  
   if (!user) {
     user = new User(event.params.account.toString())
     user.account = event.params.account
@@ -228,14 +235,15 @@ export function handleRound(event: EntriesBoughtEvent): void {
   user.save()
 
   if (round.users.length >= 5) {
-    round.status = "ACTIVATED"
+    round.status = 'ACTIVATED'
   }
-  
+
   let roundUsers = round.users
   roundUsers.push(user.id)
   round.users = roundUsers
   round.save()
-  const userEntryId = event.params.account.toString() + event.params.round.toString()
+  const userEntryId =
+    event.params.account.toString() + event.params.round.toString()
   let userEntry = UserEntry.load(userEntryId)
 
   if (!userEntry) {
@@ -249,6 +257,6 @@ export function handleRound(event: EntriesBoughtEvent): void {
   let userEntries = user.userEntries
   userEntries.push(userEntry.id)
   user.userEntries = userEntries
-  
+
   user.save()
 }
