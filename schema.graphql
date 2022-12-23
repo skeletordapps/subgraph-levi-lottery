@@ -82,20 +82,34 @@ type Round @entity {
   status: RoundStatus!
   totalEntries: BigInt!
   users: [User!]! 
-  winner: User
+  winner: Winner
+  isRefundable: Boolean!
 }
 
 type User @entity {
   id: ID!
   account: Bytes!
   userEntries: [UserEntry!]!
-  balance: BigInt!
+  balance: BigDecimal!
 }
 
 type UserEntry @entity {
   id: ID!
   round: Round!
   total: BigInt!
+  totalInETH: BigDecimal!
+  user: User!
+  refunded: Boolean!
+  transactionHash: Bytes!
+}
+
+type Winner @entity {
+  id: ID!
+  user: User!
+  prize: BigInt!
+  round: Round!
+  claimed: Boolean!
+  transactionHash: Bytes!
 }
 
 
