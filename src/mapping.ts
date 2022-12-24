@@ -319,7 +319,7 @@ export function handleRoundActivation(event: RoundActivatedEvent): void {
 
 export function handleUserRefund(event: RefundedEvent): void {
   const userEntryId =
-    event.params.account.toString() + event.params.round.toString()
+    event.params.account.toHexString() + event.params.round.toHexString()
   let userEntry = UserEntry.load(userEntryId)
 
   if (userEntry) {
