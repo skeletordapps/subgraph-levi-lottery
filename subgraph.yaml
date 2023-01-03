@@ -4,11 +4,11 @@ schema:
 dataSources:
   - kind: ethereum
     name: LeviLottoV2
-    network: goerli
+    network: arbitrum-one
     source:
-      address: "0x6c6D7309fB22fa8c617520ad71FC25D5bC7A4Af3"
+      address: "0x69B14a3f350A81AcaAC8A320598AF6E0Fe272b88"
       abi: LeviLottoV2
-      startBlock: 8099715 
+      startBlock: 49468514 
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7

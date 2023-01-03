@@ -132,8 +132,8 @@ export function handleWithdrawed(event: WithdrawedEvent): void {
 // NEW MAPPINGS
 
 const INTERVAL = BigInt.fromI32(259200)
-const START_DATE = BigInt.fromI32(1670946384)
-const ENTRY_FEE = BigDecimal.fromString('0.001')
+const START_DATE = BigInt.fromI32(1672256742)
+const ENTRY_FEE = BigDecimal.fromString('0.01')
 
 function getCurrentRound(block: BigInt): BigInt {
   return block.minus(START_DATE).div(INTERVAL).plus(BigInt.fromI32(1))
