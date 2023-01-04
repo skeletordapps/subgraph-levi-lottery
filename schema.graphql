@@ -101,6 +101,7 @@ type UserEntry @entity {
   user: User!
   refunded: Boolean!
   transactionHash: Bytes!
+  blockTimestamp: BigInt!
 }
 
 type Winner @entity {
@@ -110,6 +111,7 @@ type Winner @entity {
   round: Round!
   claimed: Boolean!
   transactionHash: Bytes!
+  blockTimestamp: BigInt!
 }
 
 

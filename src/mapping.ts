@@ -248,6 +248,7 @@ export function handleNewEntryBought(event: EntriesBoughtEvent): void {
     userEntry.totalInETH = BigDecimal.fromString('0')
     userEntry.user = user.id
     userEntry.refunded = false
+    userEntry.blockTimestamp = event.block.timestamp
   }
 
   userEntry.total = userEntry.total.plus(event.params.accountEntries)
@@ -295,6 +296,7 @@ export function handleRoundWinner(event: WinnerSelectedEvent): void {
     winner.round = round.id
     winner.claimed = false
     winner.transactionHash = event.transaction.hash
+    winner.blockTimestamp = event.block.timestamp
     winner.save()
 
     user.balance = user.balance.plus(
